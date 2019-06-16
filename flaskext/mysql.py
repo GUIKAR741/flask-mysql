@@ -1,6 +1,7 @@
 # -*- coding: UTF-8 -*-
 from __future__ import absolute_import
 import pymysql
+import pymysql.cursors
 
 try:
     from flask import _app_ctx_stack as _ctx_stack
@@ -50,6 +51,7 @@ class MySQL(object):
             self.connect_args['charset'] = self.app.config['MYSQL_DATABASE_CHARSET']
         if self.app.config['MYSQL_USE_UNICODE']:
             self.connect_args['use_unicode'] = self.app.config['MYSQL_USE_UNICODE']
+        self.connect_args['cursorclass'] = pymysql.cursors.DictCursor
         return pymysql.connect(**self.connect_args)
 
     def teardown_request(self, exception):
